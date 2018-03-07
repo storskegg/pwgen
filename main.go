@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"github.com/awnumar/memguard"
 	"log"
-	"unsafe"
 )
 
-const pwLen = 64
+const pwLen = 84
 
 func main() {
 	memguard.DisableUnixCoreDumps()
@@ -26,17 +25,7 @@ func main() {
 func generatePassword() {
 	log.Println("Generating password of length", pwLen)
 
-	b, err := memguard.NewImmutableRandom(pwLen)
-	if err != nil {
-		fmt.Println(err)
-		memguard.SafeExit(2)
-	}
-
-	defer b.Destroy()
-
-	bPtr := (*[pwLen]byte)(unsafe.Pointer(&b.Buffer()[0]))
-
-	str := Encode(bPtr)
+	str := Encode()
 
 	fmt.Println("Password: ", str, len(str))
 }

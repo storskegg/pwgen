@@ -5,21 +5,22 @@ import (
 	"errors"
 	"fmt"
 	"github.com/awnumar/memguard"
+	"math"
 )
 
 const dictionary = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-//const magic = 1.34375
+const magic = 1.34375
 
 // Encode is a wrapper to encode slice b given the dictionary constant
-func Encode(b *[pwLen]byte) string {
+func Encode() string {
 	enc, err := NewEncoding(dictionary)
 	if err != nil {
 		fmt.Println(err)
 		memguard.SafeExit(2)
 	}
 
-	return enc.Encode(b)
+	return enc.Encode()
 }
 
 // The following has been taken from https://github.com/eknkc/basex/blob/master/basex.go and adapted
@@ -59,16 +60,28 @@ func NewEncoding(alphabet string) (*Encoding, error) {
 	}, nil
 }
 
+func bufSize() int {
+	return int(math.Floor(float64(pwLen) / magic))
+}
+
 // Encode function receives a byte slice and encodes it to a string using the alphabet provided
-func (e *Encoding) Encode(source *[pwLen]byte) string {
-	if len(source) == 0 {
+func (e *Encoding) Encode() string {
+	source, err := memguard.NewImmutableRandom(bufSize())
+	if err != nil {
+		fmt.Println(err)
+		memguard.SafeExit(2)
+	}
+
+	defer source.Destroy()
+
+	if source.Size() == 0 {
 		return ""
 	}
 
 	digits := []int{0}
 
-	for i := 0; i < len(source); i++ {
-		carry := int(source[i])
+	for i := 0; i < source.Size(); i++ {
+		carry := int(source.Buffer()[i])
 
 		for j := 0; j < len(digits); j++ {
 			carry += digits[j] << 8
@@ -84,7 +97,7 @@ func (e *Encoding) Encode(source *[pwLen]byte) string {
 
 	var res bytes.Buffer
 
-	for k := 0; source[k] == 0 && k < len(source)-1; k++ {
+	for k := 0; source.Buffer()[k] == 0 && k < source.Size()-1; k++ {
 		res.WriteRune(e.alphabet[0])
 	}
 
