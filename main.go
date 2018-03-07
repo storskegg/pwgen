@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/awnumar/memguard"
-	"log"
 )
 
 const pwLen = 84
@@ -23,9 +22,5 @@ func main() {
 
 // generatePassword is the meat of the application
 func generatePassword() {
-	log.Println("Generating password of length", pwLen)
-
-	str := Encode()
-
-	fmt.Println("Password: ", str, len(str))
+	fmt.Println(Encode())
 }
