@@ -8,6 +8,8 @@ import (
 	"math"
 )
 
+// TODO: Will need some pad for arbitrary lengths in the future
+
 const dictionary = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 const magic = 1.34375
