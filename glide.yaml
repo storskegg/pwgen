@@ -1,0 +1,4 @@
+package: .
+import:
+- package: github.com/awnumar/memguard
+  version: ~0.13.3
