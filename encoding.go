@@ -25,7 +25,7 @@ func Encode() string {
 	return enc.Encode()
 }
 
-// The following has been taken from https://github.com/eknkc/basex/blob/master/basex.go and adapted
+// The following has been taken from https://github.com/eknkc/basex/blob/master/basex.go and minimally adapted
 
 // Encoding is a custom base encoding defined by an alphabet.
 // It should bre created using NewEncoding function
