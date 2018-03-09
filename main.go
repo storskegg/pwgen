@@ -22,5 +22,5 @@ func main() {
 
 // generatePassword is the meat of the application
 func generatePassword() {
-	fmt.Println(Encode())
+	fmt.Print(Encode())
 }
