@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/awnumar/memguard"
+	"os"
+	"strconv"
 )
-
-const pwLen = 84
 
 func main() {
 	memguard.DisableUnixCoreDumps()
@@ -17,10 +17,20 @@ func main() {
 	// Make sure to destroy all LockedBuffers when returning.
 	defer memguard.DestroyAll()
 
-	generatePassword()
-}
+	var pwLenArg string
+	if len(os.Args) > 1 {
+		pwLenArg = os.Args[1]
+	} else {
+		pwLenArg = "84"
+	}
 
-// generatePassword is the meat of the application
-func generatePassword() {
-	fmt.Print(Encode())
+	var pwLen int64
+	var err error
+
+	pwLen, err = strconv.ParseInt(pwLenArg, 10, 64)
+	if err != nil {
+		pwLen = 84
+	}
+
+	fmt.Print(Encode(pwLen))
 }

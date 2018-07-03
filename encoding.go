@@ -5,24 +5,19 @@ import (
 	"errors"
 	"fmt"
 	"github.com/awnumar/memguard"
-	"math"
 )
 
-// TODO: Will need some pad for arbitrary lengths in the future
-
-const dictionary = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-const magic = 1.34375
+const dictionary = "0123456789abcdefghijklmno-qrstuvwxyzABCDEF_HIJKLMNOPQRSTUVWXYZ"
 
 // Encode is a wrapper to encode slice b given the dictionary constant
-func Encode() string {
+func Encode(pwLen int64) string {
 	enc, err := NewEncoding(dictionary)
 	if err != nil {
 		fmt.Println(err)
 		memguard.SafeExit(2)
 	}
 
-	return enc.Encode()
+	return enc.Encode(pwLen)
 }
 
 // The following has been taken from https://github.com/eknkc/basex/blob/master/basex.go and minimally adapted
@@ -62,13 +57,9 @@ func NewEncoding(alphabet string) (*Encoding, error) {
 	}, nil
 }
 
-func bufSize() int {
-	return int(math.Floor(float64(pwLen) / magic))
-}
-
 // Encode function receives a byte slice and encodes it to a string using the alphabet provided
-func (e *Encoding) Encode() string {
-	source, err := memguard.NewImmutableRandom(bufSize())
+func (e *Encoding) Encode(maxLen int64) string {
+	source, err := memguard.NewImmutableRandom(int(maxLen))
 	if err != nil {
 		fmt.Println(err)
 		memguard.SafeExit(2)
@@ -107,5 +98,7 @@ func (e *Encoding) Encode() string {
 		res.WriteRune(e.alphabet[digits[q]])
 	}
 
-	return res.String()
+	result := res.String()
+
+	return result[0:maxLen]
 }
