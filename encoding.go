@@ -7,11 +7,18 @@ import (
 	"github.com/awnumar/memguard"
 )
 
-const dictionary = "0123456789abcdefghijklmno-qrstuvwxyzABCDEF_HIJKLMNOPQRSTUVWXYZ"
+const dictionaryX = "0123456789abcdefghijklmno-qrstuvwxyzABCDEF_HIJKLMNOPQRSTUVWXYZ"
+const dictHex = "0123456789abcdef"
 
-// Encode is a wrapper to encode slice b given the dictionary constant
-func Encode(pwLen int64) string {
-	enc, err := NewEncoding(dictionary)
+// Encode is a wrapper to encode slice b given the dictionaryX constant
+func Encode(pwLen int, hex bool) string {
+	var enc *Encoding
+	var err error
+	if hex {
+		enc, err = NewEncoding(dictHex)
+	} else {
+		enc, err = NewEncoding(dictionaryX)
+	}
 	if err != nil {
 		fmt.Println(err)
 		memguard.SafeExit(2)
@@ -58,8 +65,8 @@ func NewEncoding(alphabet string) (*Encoding, error) {
 }
 
 // Encode function receives a byte slice and encodes it to a string using the alphabet provided
-func (e *Encoding) Encode(maxLen int64) string {
-	source, err := memguard.NewImmutableRandom(int(maxLen))
+func (e *Encoding) Encode(maxLen int) string {
+	source, err := memguard.NewImmutableRandom(maxLen)
 	if err != nil {
 		fmt.Println(err)
 		memguard.SafeExit(2)

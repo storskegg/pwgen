@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/awnumar/memguard"
+	"gopkg.in/urfave/cli.v2"
 	"os"
-	"strconv"
 )
 
 func main() {
@@ -17,20 +17,32 @@ func main() {
 	// Make sure to destroy all LockedBuffers when returning.
 	defer memguard.DestroyAll()
 
-	var pwLenArg string
-	if len(os.Args) > 1 {
-		pwLenArg = os.Args[1]
-	} else {
-		pwLenArg = "84"
+	app := &cli.App{
+		Name:  "greet",
+		Usage: "say a greeting",
+		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:  "hex",
+				Usage: "Hexadecimal Output",
+				Value: false,
+			},
+			&cli.IntFlag{
+				Name:  "n",
+				Usage: "Output Length",
+				Value: 84,
+			},
+		},
+		Action: func(c *cli.Context) error {
+			pwLen := c.Int("n")
+
+			fmt.Println(Encode(pwLen, c.Bool("hex")))
+			return nil
+		},
 	}
 
-	var pwLen int64
-	var err error
-
-	pwLen, err = strconv.ParseInt(pwLenArg, 10, 64)
+	err := app.Run(os.Args)
 	if err != nil {
-		pwLen = 84
+		memguard.DestroyAll()
+		panic(err)
 	}
-
-	fmt.Print(Encode(pwLen))
 }
