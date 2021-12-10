@@ -1,0 +1,6 @@
+github.com/awnumar/memguard v0.13.3 h1:fYe4SO1se1/KDrH+HHYIcZgtV3VpEQh94AHJ2oJobOY=
+github.com/awnumar/memguard v0.13.3/go.mod h1:77EUD6uwfgcd6zTmn++i5ujEFviGRQfE8ELbDJO1rpA=
+golang.org/x/sys v0.0.0-20190927073244-c990c680b611 h1:q9u40nxWT5zRClI/uU9dHCiYGottAg6Nzz4YUQyHxdA=
+golang.org/x/sys v0.0.0-20190927073244-c990c680b611/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+gopkg.in/urfave/cli.v2 v2.0.0-20190806201727-b62605953717 h1:OvXt/p4cdwNl+mwcWMq/AxaKFkhdxcjx+tx+qf4EOvY=
+gopkg.in/urfave/cli.v2 v2.0.0-20190806201727-b62605953717/go.mod h1:cKXr3E0k4aosgycml1b5z33BVV6hai1Kh7uDgFOkbcs=
