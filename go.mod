@@ -7,4 +7,4 @@ require (
 	gopkg.in/urfave/cli.v2 v2.0.0-20190806201727-b62605953717
 )
 
-require golang.org/x/sys v0.0.0-20190927073244-c990c680b611 // indirect
+require golang.org/x/sys v0.1.0 // indirect
